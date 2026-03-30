@@ -9,7 +9,7 @@ function SignUp() {
         password: "",
     });
     const API = process.env.REACT_APP_API;
-    console.log(API);
+    console.log("API", API);
 
     const handleSubmit = async () => {
         try {
