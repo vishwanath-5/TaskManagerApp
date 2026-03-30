@@ -18,11 +18,11 @@ function Home() {
         }
     }, []);
 
-    // 📥 Fetch tasks
+    // 📥 Fetch tasks ✅ FIXED
     useEffect(() => {
         const fetchTasks = async () => {
             try {
-                const res = await axios.get(API, {
+                const res = await axios.get(`${API}/tasks`, {
                     headers: {
                         Authorization: localStorage.getItem("token"),
                     },
@@ -36,7 +36,7 @@ function Home() {
         fetchTasks();
     }, []);
 
-    // ➕ Add task
+    // ➕ Add task (already correct)
     const addTask = async (e) => {
         e.preventDefault();
 
@@ -47,7 +47,7 @@ function Home() {
 
         try {
             const res = await axios.post(
-                API,
+                `${API}/tasks`,
                 { title, description, completed: false },
                 {
                     headers: {
@@ -64,10 +64,10 @@ function Home() {
         }
     };
 
-    // ❌ Delete task
+    // ❌ Delete task ✅ FIXED
     const deleteTask = async (id) => {
         try {
-            await axios.delete(`${API}/${id}`, {
+            await axios.delete(`${API}/tasks/${id}`, {
                 headers: {
                     Authorization: localStorage.getItem("token"),
                 },
@@ -79,11 +79,11 @@ function Home() {
         }
     };
 
-    // ✅ Toggle complete
+    // ✅ Toggle complete ✅ FIXED
     const toggleComplete = async (id, completed) => {
         try {
             const res = await axios.put(
-                `${API}/${id}`,
+                `${API}/tasks/${id}`,
                 { completed: !completed },
                 {
                     headers: {
@@ -115,62 +115,39 @@ function Home() {
                 <nav className="navbar navbar-expand-lg navbar-light bg-body-tertiary shadow-sm">
                     <div className="container-fluid">
 
-                        {/* Logo */}
                         <NavLink className="navbar-brand fw-bold" to="/home">
                             Task Manager
                         </NavLink>
 
-                        {/* 🔥 Mobile Toggle Button */}
                         <button
                             className="navbar-toggler"
                             type="button"
                             data-bs-toggle="collapse"
                             data-bs-target="#navbarContent"
-                            aria-controls="navbarContent"
-                            aria-expanded="false"
-                            aria-label="Toggle navigation"
                         >
                             <span className="navbar-toggler-icon"></span>
                         </button>
 
-                        {/* 🔥 Collapsible Content */}
                         <div className="collapse navbar-collapse" id="navbarContent">
 
-                            {/* Left Menu */}
-                            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+                            <ul className="navbar-nav me-auto">
                                 <li className="nav-item">
-                                    <NavLink to="/home" className="nav-link">
-                                        Home
-                                    </NavLink>
+                                    <NavLink to="/home" className="nav-link">Home</NavLink>
                                 </li>
                                 <li className="nav-item">
-                                    <NavLink to="/about" className="nav-link">
-                                        About
-                                    </NavLink>
+                                    <NavLink to="/about" className="nav-link">About</NavLink>
                                 </li>
                             </ul>
 
-                            {/* Right Side */}
-                            <div className="d-flex flex-column flex-lg-row gap-2">
+                            <div className="d-flex gap-2">
 
-                                {/* 🔍 Search */}
                                 <input
                                     className="form-control"
-                                    type="search"
                                     placeholder="Search tasks..."
                                     value={search}
                                     onChange={(e) => setSearch(e.target.value)}
                                 />
 
-                                {/* Search Button */}
-                                <button
-                                    className="btn btn-outline-success"
-                                    type="button"
-                                >
-                                    Search
-                                </button>
-
-                                {/* Logout */}
                                 <button
                                     className="btn btn-danger"
                                     onClick={() => {
@@ -185,36 +162,28 @@ function Home() {
                         </div>
                     </div>
                 </nav>
+
                 {/* ➕ Add Task */}
                 <div className="row justify-content-center mt-4">
-                    <div className="col-md-6 col-lg-4">
+                    <div className="col-md-6">
                         <form onSubmit={addTask}>
-                            <div className="mb-3 text-center">
-                                <label className="form-label">Task Title</label>
+                            <input
+                                value={title}
+                                onChange={(e) => setTitle(e.target.value)}
+                                placeholder="Task title"
+                                className="form-control"
+                            />
 
-                                <input
-                                    value={title}
-                                    onChange={(e) => setTitle(e.target.value)}
-                                    placeholder="Enter task"
-                                    type="text"
-                                    className="form-control"
-                                />
+                            <input
+                                value={description}
+                                onChange={(e) => setDescription(e.target.value)}
+                                placeholder="Description"
+                                className="form-control mt-2"
+                            />
 
-                                <input
-                                    value={description}
-                                    onChange={(e) => setDescription(e.target.value)}
-                                    placeholder="Enter description"
-                                    type="text"
-                                    className="form-control mt-2"
-                                />
-
-                                <button
-                                    type="submit"
-                                    className="btn btn-primary mt-3 w-100"
-                                >
-                                    Add Task
-                                </button>
-                            </div>
+                            <button className="btn btn-primary mt-3 w-100">
+                                Add Task
+                            </button>
                         </form>
                     </div>
                 </div>
@@ -228,33 +197,22 @@ function Home() {
                     ) : (
                         filteredTasks.map((task) => (
                             <div className="col-md-4 mb-4" key={task._id}>
-                                <div className="card shadow h-100">
+                                <div className="card shadow">
                                     <div className="card-body text-center">
-                                        <h5
-                                            className={`card-title ${task.completed
-                                                ? "text-decoration-line-through text-muted"
-                                                : ""
-                                                }`}
-                                        >
+
+                                        <h5 className={task.completed ? "text-decoration-line-through text-muted" : ""}>
                                             {task.title}
                                         </h5>
 
-                                        <p className="card-text text-muted">
-                                            {task.description}
-                                        </p>
+                                        <p className="text-muted">{task.description}</p>
 
                                         <button
-                                            className={`btn ${task.completed
-                                                ? "btn-success"
-                                                : "btn-outline-success"
-                                                } mt-2`}
+                                            className="btn btn-success mt-2"
                                             onClick={() =>
                                                 toggleComplete(task._id, task.completed)
                                             }
                                         >
-                                            {task.completed
-                                                ? "Completed"
-                                                : "Mark Done"}
+                                            {task.completed ? "Completed" : "Mark Done"}
                                         </button>
 
                                         <button
@@ -263,6 +221,7 @@ function Home() {
                                         >
                                             Delete
                                         </button>
+
                                     </div>
                                 </div>
                             </div>

@@ -9,7 +9,6 @@ app.use(
   cors({
     origin: "*",
     methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true,
   }),
 );
 
@@ -18,10 +17,10 @@ app.use(express.json());
 
 // ✅ Routes
 const authRoutes = require("./routes/auth");
-app.use("/api/auth", authRoutes);
+app.use("/auth", authRoutes);
 
 const taskRoutes = require("./routes/taskRoutes");
-app.use("/api/tasks", taskRoutes);
+app.use("/tasks", taskRoutes);
 
 const Task = require("./models/Task");
 
@@ -31,7 +30,7 @@ app.get("/", (req, res) => {
 });
 
 // Delete route
-app.delete("/api/tasks/:id", async (req, res) => {
+app.delete("/tasks/:id", async (req, res) => {
   try {
     const task = await Task.findByIdAndDelete(req.params.id);
     if (!task) {
