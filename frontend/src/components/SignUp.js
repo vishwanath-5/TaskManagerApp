@@ -8,11 +8,12 @@ function SignUp() {
         email: "",
         password: "",
     });
+    const API = process.env.REACT_APP_API;
 
     const handleSubmit = async () => {
         try {
             await axios.post(
-                "http://localhost:5000/api/auth/signup",
+                `${API}/auth/signup`,
                 form
             );
 

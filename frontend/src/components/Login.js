@@ -4,11 +4,11 @@ import { Link } from "react-router-dom";
 
 function Login() {
     const [form, setForm] = useState({ email: "", password: "" });
-
+    const API = process.env.REACT_APP_API;
     const handleLogin = async () => {
         try {
             const res = await axios.post(
-                "http://localhost:5000/api/auth/login",
+                `${API}/auth/login`,
                 form
             );
 

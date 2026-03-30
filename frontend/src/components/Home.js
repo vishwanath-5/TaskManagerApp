@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { NavLink } from "react-router-dom";
 
-const API = "https://taskmanagerapp-ibf9.onrender.com/";
+const API = process.env.REACT_APP_API;
 
 function Home() {
     const [tasks, setTasks] = useState([]);
