@@ -48,7 +48,7 @@ function Login() {
             {/* 🔥 NEW */}
             <p className="mt-3">
                 Don’t have an account?{" "}
-                <Link to="/signup" className="text-primary fw-bold">
+                <Link to="/signup" className="text-primary fw-bold ">
                     Signup
                 </Link>
             </p>
