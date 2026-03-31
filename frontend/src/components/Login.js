@@ -8,7 +8,7 @@ function Login() {
     const handleLogin = async () => {
         try {
             const res = await axios.post(
-                `${API}/login`,
+                `${API}/auth/login`,
                 form
             );
 

@@ -13,7 +13,7 @@ function SignUp() {
     const handleSubmit = async () => {
         try {
             await axios.post(
-                `${API}/signup`,
+                `${API}/auth/signup`,
                 form
             );
 
